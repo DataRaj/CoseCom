@@ -16,7 +16,7 @@ export default function About() {
       </div>
 
       <div className="w-full gap-6 flex flex-col items-center justify-center py-12 px-8 bg-muted dark:bg-[#F8F8F8] rounded-2xl shadow-sm">
-        {/* <Image src={} alt="CoseCom Logo" className="h-10 w-auto mb-2" /> */}
+        <img src={'/cosecom_logo.jpg'} alt="CoseCom Logo" className="h-10 w-auto mb-2" />
         <p className="text-center text-lg text-neutral-800 max-w-[600px] leading-relaxed">
           Born from the fusion of nature&apos;s finest ingredients and
           cutting-edge science, CoseCom represents the pinnacle of luxury skincare.

@@ -31,7 +31,7 @@ export default function Header(
         }`}
       >
         <Link href="/">
-          <h2 className="font-medium text-2xl">CoseCom</h2>
+          <img src="/cosecom_logo.jpg" alt="cosecom logo" className="h-20 w-180 mr-4" />
         </Link>
         {!products && (
           <nav>

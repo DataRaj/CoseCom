@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function HeroSection() {
   return (
-    <section className="py-12 sm:py-24 w-full max-w-screen-lg mx-auto flex justify-center px-4">
+    <section className="pt-12 sm:py-24 w-full max-w-screen-lg mx-auto flex justify-center px-4">
       <div className="flex justify-center md:justify-start md:max-w-max mx-auto md:pr-8 w-full items-center border rounded-t-2xl h-32 sm:h-52 relative">
         <Image
           width={335}
