@@ -7,10 +7,11 @@ export default function HeroSection() {
         <Image
           width={335}
           height={666}
-          src="/hero-a.png"
+          src="/hero.jpg"
           alt="cover"
-          className="absolute bottom-0 z-30 left-0 h-[220px] sm:h-[280px] md:h-[380px] w-auto drop-shadow-[1px_0px_0px_white]"
+          className="absolute -bottom-20 z-30 left-0 h-[220px] sm:h-[280px] md:h-[380px] w-auto rounded-md shadow-inner shadow-gray-900"
         />
+        {/* drop-shadow-[1px_0px_0px_white] add this in above cover image if needed */}
         <p className="ml-20 md:ml-52 z-10 text-3xl text-center md:text-start sm:text-4xl md:text-[2.5rem] lg:text-6xl leading-[40px] lg:leading-[62px] font-extralight italic tracking-tighter">
           <span className="hidden sm:block">Timeless Beauty, Redefined!</span>
           Your Skin Deserves{" "}
