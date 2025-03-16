@@ -1,4 +1,4 @@
-// app/api/orders/route.ts
+ // app/api/orders/route.ts
 import { db } from "@/db";
 import { orderItemsTable, ordersTable, cartItemsTable} from "@/db/schema";
 // import { useSession } from "@/lib/auth-client";

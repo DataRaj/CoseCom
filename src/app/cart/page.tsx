@@ -1,15 +1,12 @@
 "use client";
 
+import AddressModal from "@/components/address-modal";
 import CartOrderTable from "@/components/cart/CartOrderTable";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { products } from "@/lib/app-data";
 import useCartStore from "@/store/useStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -26,8 +23,25 @@ const formSchema = z.object({
 
 export default function CartPage() {
   const router = useRouter();
+  const [address, setAddress] = useState<any>(null);
+  const [open, setOpen] = useState(true);
   const { cart, clearCart } = useCartStore();
   const form = useForm({ resolver: zodResolver(formSchema), defaultValues: { name: "", email: "", phoneNumber: "", addressLine: "", city: "", state: "", zipcode: "", country: "India" } });
+
+  useEffect(() => {
+    const getAddress = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_SERVER_APP_URL}/api/address`);
+        const data = await response.json();
+        if (data.addresses && data.addresses.length > 0) {
+          setAddress(data.addresses[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching address:", error);
+      }
+    };
+    getAddress();
+  }, []);
 
   // useEffect(() => {
   //   (async () => {
@@ -43,6 +57,11 @@ export default function CartPage() {
     }
   }, [cart]);
 
+
+
+
+  console.log("is address modal is open, ", open)
+  console.log("address is ", address)
   const onSubmit = async (values: any) => {
     try {
       const cartProducts = cart.map(({ productId, quantity }) => {
@@ -78,7 +97,7 @@ export default function CartPage() {
       <CartOrderTable />
       <div className="py-2">
         <h1 className="p-2 text-2xl font-bold">Checkout</h1>
-        <Form {...form}>
+        {/* <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 p-2">
             {["name", "email", "phoneNumber", "addressLine", "zipcode", "city", "state"].map((field) => (
               // @ts-ignore
@@ -102,7 +121,18 @@ export default function CartPage() {
               {form.formState.isSubmitting ? <div className="flex gap-2"><span>Loading</span><Loader2 className="animate-spin" /></div> : "Buy Now"}
             </Button>
           </form>
-        </Form>
+        </Form> */}
+        {
+          !address &&
+          <>
+            <span className=" flex ">There is no address in your account.
+              </span>
+            <span className=" text-blue-700" onClick={() => setOpen(true)}>
+              Please add one
+            </span>
+          <AddressModal open={open} onOpenChange={setOpen} />
+          </>
+        }
       </div>
     </section>
   );
