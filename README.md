@@ -55,6 +55,10 @@ I wanted to build something clean, modern, and fast, using Next.js, Tailwind CSS
 - [TypeScript][TypeScript-url]
 - [TailwindCSS][TailwindCSS-url]
 - [Shadcn UI][Shadcn-url]
+- [Drizzle][Prisma-url]
+- [Better-auth][Better-url]
+- [PostgreSQL][PostgreSQL-url]
+- [Razorpay][Razorpay-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -69,7 +73,8 @@ I wanted to build something clean, modern, and fast, using Next.js, Tailwind CSS
    ```sh
    npm install
    ```
-3. Run the Project
+
+2. Run the Project
 
    ```sh
    npm run dev
