@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
       console.log("No address found for userId:", userId.toString());
       return NextResponse.json({ error: "Address not found" }, { status: 404 });
     }
-    console.log(`Found ${address} address for user ${userId}`);
+    console.log(`Found ${JSON.stringify(address)} address for user ${userId}`);
 
     // Return the addresses
     return NextResponse.json({ address }, { status: 200 });
@@ -52,14 +52,14 @@ export async function POST(req: NextRequest) {
       if (!userToken) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
-    const { userId, address, city, state, zip, country } = body;
-    console.log("here is the user address, \s",  userId, address, city, state, zip, country)
-    if (userId || !address || !city || !state || !zip || !country || !country.length) {
+    const { userId, mobile, address, city, state, zip, country } = body;
+    console.log("here is the user address, ", mobile, address, city, state, zip, country)
+    if (!userId ||!mobile || !address || !city || !state || !zip || !country || !country.length) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
 
-    const [newAddress] = await db.insert(addressTable).values({ userId, address, city, state, zip, country }).returning();
+    const [newAddress] = await db.insert(addressTable).values({ userId, mobile, address, city, state, zip, country }).returning();
     return NextResponse.json({ address: newAddress }, { status: 201 });
   } catch (error) {
     console.error("Error creating address:", error);

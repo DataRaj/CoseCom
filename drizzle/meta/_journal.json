@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1741752516414,
-      "tag": "0000_daffy_tomorrow_man",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1741752856318,
-      "tag": "0001_volatile_nocturne",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1742143080018,
-      "tag": "0002_wakeful_white_queen",
+      "when": 1742214853173,
+      "tag": "0000_hesitant_rawhide_kid",
       "breakpoints": true
     }
   ]

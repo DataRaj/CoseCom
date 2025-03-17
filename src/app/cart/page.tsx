@@ -31,38 +31,35 @@ export default function CartPage() {
   const { cart, clearCart } = useCartStore();
 
   const form = useForm({ resolver: zodResolver(formSchema), defaultValues: { name: "", email: "", phoneNumber: "", addressLine: "", city: "", state: "", zipcode: "", country: "India" } });
-  // console.log("Session:", session?.user.id);
-
- // if(session?.user.id === undefined) return <div>Loading...</div>;
 
   useEffect(() => {
+    if (!session?.user?.id) return;
 
-    const fetchAddresses = async () => {
-        const userId = session?.user.id;
+    const fetchAddressData = async () => {
       try {
-        if (!userId) {
-          console.error("No user ID available in session");
-          return;
-        }
+        console.log("Fetching addresses with userId:", session.user.id);
 
-        console.log("Fetching addresses with userId:", userId);
-
-        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/address?userId=${userId}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/address?userId=${session.user.id}`);
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(`Failed to fetch addresses: ${errorData.error || response.statusText}`);
+          throw new Error(`Failed to fetch address: ${errorData.error || response.statusText}`);
         }
-
         const data = await response.json();
-        return data.addresses;
+        console.log("Fetched addresses:", data.address);
+        setAddress(data.address); // Set the address state with the fetched data
       } catch (error) {
         console.error("Error fetching addresses:", error);
-        // Handle the error appropriately in your UI
+        setAddress(null); // Set to null or some default value on error
       }
     };
-    fetchAddresses();
-  }, []);
+
+    fetchAddressData();
+
+  }, [session?.user?.id]); // ✅ Re-run when session.user.id changes
+
+  console.log(`here is an address: `, address)
+
 
   useEffect(() => {
     if (!Array.isArray(cart)) {
@@ -70,8 +67,6 @@ export default function CartPage() {
       clearCart();
     }
   }, [cart]);
-
-
 
   const onSubmit = async (values: any) => {
     try {
@@ -98,10 +93,8 @@ export default function CartPage() {
     } catch (err) {
       console.error("Submission error:", err);
     }
-
     form.reset();
   };
-
 
   return (
     <section className="p-2">
@@ -123,7 +116,6 @@ export default function CartPage() {
             <AddressModal
               open={open}
               onOpenChange={setOpen}
-
             />
           </>
         ) : (
@@ -154,12 +146,12 @@ export default function CartPage() {
 
                               <div>
                                 <p className="text-sm font-medium text-gray-400">Phone Number</p>
-                                <p className="mt-1 text-sm text-gray-100">{address.phoneNumber}</p>
+                                <p className="mt-1 text-sm text-gray-100">{address.mobile}</p>
                               </div>
 
                               <div>
                                 <p className="text-sm font-medium text-gray-400">Address</p>
-                                <p className="mt-1 text-sm text-gray-100">{address.addressLine}</p>
+                                <p className="mt-1 text-sm text-gray-100">{address.address}</p>
                               </div>
 
                               <div className="grid grid-cols-2 gap-4">
@@ -180,7 +172,7 @@ export default function CartPage() {
                                 </div>
                                 <div>
                                   <p className="text-sm font-medium text-gray-400">Zipcode</p>
-                                  <p className="mt-1 text-sm text-gray-100">{address.zipcode}</p>
+                                  <p className="mt-1 text-sm text-gray-100">{address.zip}</p>
                                 </div>
                               </div>
                             </div>
@@ -207,11 +199,7 @@ export default function CartPage() {
                           </button>
                         </div>
 
-            <AddressModal
-              open={open}
-              onOpenChange={setOpen}
 
-            />
           </>
         )}
       </div>
