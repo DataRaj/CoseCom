@@ -24,6 +24,7 @@ export function CardButton() {
   // const [checkoutClick, setCheckoutClick] = useState("Continue to Checkout");
   const router = useRouter()
   const handleCheckout = () => {
+
     router.push('/cart')
   }
 

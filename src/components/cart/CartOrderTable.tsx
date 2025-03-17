@@ -46,7 +46,7 @@ export default function CartOrderTable() {
     .filter(Boolean) as { id: number, name: string; image: string; price: number; quantity: number }[];
 
   const subtotal = cartProducts.reduce((total, { price, quantity }) => total + price * quantity, 0);
-  console.log(cart.length)
+  // console.log(cart.length)
 
   return (
     <div className="py-2">

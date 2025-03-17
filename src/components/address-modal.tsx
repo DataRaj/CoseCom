@@ -1,14 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useSession } from '@/lib/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Building, CheckCircle, ChevronLeft, ChevronRight, Home, MapPin, X } from 'lucide-react';
@@ -23,8 +24,8 @@ const addressFormSchema = z.object({
   address: z.string().min(5, "Address must be at least 5 characters"),
   city: z.string().min(2, "City must be at least 2 characters"),
   state: z.string().min(2, "State must be at least 2 characters"),
-  zip: z.number()
-    .min(6, "Zip code must be at least 5 characters")
+  zip: z.string()
+    .min(6, "Zip code must be 6 numbers")
     .max(6, "Zip code must not exceed 10 characters"),
     // .refine((val) => /^\d{5}(-\d{4})?$/.test(val), "Invalid zip code format"),
   country: z.string().min(2, "Country must be at least 2 characters"),
@@ -50,6 +51,8 @@ const AddressModal = ({ open, onOpenChange }: AddressModalProps) => {
   const [direction, setDirection] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasAddress, setHasAddress] = useState(false);
+  const {data: session} = useSession();
+
   // const { toast } = useToast();
   const router = useRouter();
 
@@ -59,7 +62,7 @@ const AddressModal = ({ open, onOpenChange }: AddressModalProps) => {
       address: '',
       city: '',
       state: '',
-      zip: 0,
+      zip: '',
       country: '',
     },
   });
@@ -114,14 +117,16 @@ const AddressModal = ({ open, onOpenChange }: AddressModalProps) => {
 
   // Handle form submission
   const onSubmit = async (values: AddressFormValues) => {
+
     setIsSubmitting(true);
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/address`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'authorization': session?.session.token!,
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify({...values, userId: session?.user.id}),
       });
 
       if (!response.ok) {

@@ -2,15 +2,15 @@ import { db } from "@/db";
 import { addressTable, userTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
-
 // GET address for user
 export async function GET(req: NextRequest) {
   try {
-    const userToken = req.headers.get("authorization");
-    if (!userToken) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // const userToken = req.headers.get("authorization");
+    // if (!userToken) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
     const { userId } = body;
+    console.log("here is the user id", userId)
     const user = await db.select().from(userTable).where(eq(userTable.id, userId)).then(res => res[0]);
     if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
 
@@ -26,13 +26,15 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const userToken = req.headers.get("authorization");
-    if (!userToken) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      if (!userToken) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
     const { userId, address, city, state, zip, country } = body;
-    if (!userId || !address || !city || !state || !zip || !country) {
+    console.log("here is the user address, \s",  userId, address, city, state, zip, country)
+    if (userId || !address || !city || !state || !zip || !country || !country.length) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
+
 
     const [newAddress] = await db.insert(addressTable).values({ userId, address, city, state, zip, country }).returning();
     return NextResponse.json({ address: newAddress }, { status: 201 });

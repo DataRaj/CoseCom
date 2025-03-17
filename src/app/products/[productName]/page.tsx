@@ -18,7 +18,7 @@ export default function ProductPage() {
   const { data: session } = useSession();
 
   // console.log(`here is an user data: `, user.getUserId())
-  console.log('here is a session ', session?.user.id)
+  // console.log('here is a session ', session?.user.id)
 
   // const { addToCart, updateItemQuantity } = useAppContext();
   const { addToCart, updateItemQuantity } = useCartStore.getState();
@@ -117,7 +117,8 @@ export default function ProductPage() {
                    else {
                   addToCart(product.id);
                   updateItemQuantity(product.id, quantity);
-                  console.log('added to cart ' + product.name)
+                  // console.log('added to cart ' + product.name)
+
 
                    }
                 }}
