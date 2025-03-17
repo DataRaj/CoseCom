@@ -30,13 +30,14 @@ export default function CartPage() {
   const { data: session, status } = useSession();
   const { cart, clearCart } = useCartStore();
   const form = useForm({ resolver: zodResolver(formSchema), defaultValues: { name: "", email: "", phoneNumber: "", addressLine: "", city: "", state: "", zipcode: "", country: "India" } });
+  console.log("Session:", session);
 
   useEffect(() => {
 
     const getAddress = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/address`, {
-          method: 'POST',
+          method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             // 'authorization': session?.session.token!,

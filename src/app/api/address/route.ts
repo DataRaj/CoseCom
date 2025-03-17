@@ -3,13 +3,13 @@ import { addressTable, userTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 // GET address for user
-export async function GET(req: NextRequest) {
+export async function GET(req: NextRequest, {params}: any) {
   try {
     // const userToken = req.headers.get("authorization");
     // if (!userToken) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-    const body = await req.json();
-    const { userId } = body;
+    const { userId } = params;
+    // const body = await req.json();
+    // const { userId } = body;
     console.log("here is the user id", userId)
     const user = await db.select().from(userTable).where(eq(userTable.id, userId)).then(res => res[0]);
     if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
