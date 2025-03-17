@@ -9,12 +9,12 @@ export async function GET(req: NextRequest) {
     const userId = req.nextUrl.searchParams.get("userId");
 
     // Check if userId exists
-    if (!userId || userId === "undefined") {
-      console.log("Missing or invalid userId in request", { receivedValue: userId });
-      return NextResponse.json({ error: "Missing or invalid userId" }, { status: 400 });
-    }
+      if (!userId || userId === "undefined") {
+        console.log("Missing or invalid userId in request", { receivedValue: userId });
+        return NextResponse.json({ error: "Missing or invalid userId" }, { status: 400 });
+      }
 
-    console.log("Fetching addresses for userId:", userId);
+    // console.log("Fetching addresses for userId:", userId);
 // const userId = 'yy7AUhHOgTUfCTwUJynEymER0kQkf08S'
     const address = await db
       .select()
@@ -22,17 +22,19 @@ export async function GET(req: NextRequest) {
       .where(eq(addressTable.userId, userId.toString())).then(res => res[0]);
 
     if(!address) {
-      console.log("No address found for userId:", userId.toString());
+      // console.log("No address found for userId:", userId.toString());
       return NextResponse.json({ error: "Address not found" }, { status: 404 });
     }
-    console.log(`Found ${JSON.stringify(address)} address for user ${userId}`);
+     // console.log(`Found ${JSON.stringify(address)} address for user ${userId}`);
 
     // Return the addresses
     return NextResponse.json({ address }, { status: 200 });
   } catch (error) {
     // Detailed error logging
     console.error("Error in address GET endpoint:", {
+      // @ts-ignore
       message: error.message,
+      // @ts-ignore
       stack: error.stack,
       userId: req.nextUrl.searchParams.get("userId")
     });
@@ -40,6 +42,7 @@ export async function GET(req: NextRequest) {
     // Return a safe error response
     return NextResponse.json({
       error: "Internal server error",
+      // @ts-ignore
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
     }, { status: 500 });
   }
@@ -53,7 +56,7 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
     const { userId, mobile, address, city, state, zip, country } = body;
-    console.log("here is the user address, ", mobile, address, city, state, zip, country)
+    // console.log("here is the user address, ", mobile, address, city, state, zip, country)
     if (!userId ||!mobile || !address || !city || !state || !zip || !country || !country.length) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }

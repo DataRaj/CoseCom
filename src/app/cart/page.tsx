@@ -86,6 +86,17 @@ export default function CartPage() {
 
       if (res.ok && data.status === "issued" && data.customer_details) {
         clearCart();
+        const order = await fetch('/api/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: data.customer_details.userId,
+            total: cartProducts.reduce((total, { price, quantity }) => total + price * quantity, 0),
+            status: "pending"
+          })
+        });
         router.push(`/cart/success?name=${data.customer_details.name}&email=${data.customer_details.email}&phoneNumber=${data.customer_details.contact}&short_url=${data.short_url}`);
       } else {
         console.error("Payment failed:", data.error || "Invalid response structure");
