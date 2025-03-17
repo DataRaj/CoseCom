@@ -12,11 +12,11 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-
+    console.log(`here is a data from the body of razerpay: ${JSON.stringify(body)}` )
     const lineItems = body.cartProducts.map((product: any) => ({
       name: product.name,
-      amount: product.price * 87 * 100, // Convert to paisa
-      currency: "INR",
+      amount: product.price, // Convert to paisa
+      currency: "USD",
       quantity: product.quantity,
     }));
 
@@ -25,13 +25,13 @@ export async function POST(request: Request) {
       customer: {
         name: body.name,
         email: body.email,
-        contact: body.phoneNumber,
+        contact: body.mobile,
         shipping_address: {
-          line1: body.addressLine,
+          line1: body.address,
           city: body.city,
           state: body.state,
-          country: "India",
-          zipcode: body.zipcode,
+          country: body.country,
+          zipcode: body.zip,
         },
       },
       line_items: lineItems,
