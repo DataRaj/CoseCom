@@ -68,12 +68,20 @@ export default function CartPage() {
     }
   }, [cart]);
 
+
+  const getProduct = cart.map(({ productId, quantity }) => {
+    const product = products.find(({ id }) => id === productId);
+    return {product, quantity};
+  }).filter(Boolean);
+
+  const cartProducts =  getProduct ? { name: getProduct.product.name, price: getProduct.product.price, quantity: getProduct.quantity } : null;
+
+  const ItemsProduct =  getProduct ? { id: getProduct.id, quantity: getProduct.quantity } : null;
+
+
+
   const onSubmit = async (values: any) => {
     try {
-      const cartProducts = cart.map(({ productId, quantity }) => {
-        const product = products.find(({ id }) => id === productId);
-        return product ? { name: product.name, price: product.price, quantity } : null;
-      }).filter(Boolean);
 
       const res = await fetch("/api/razorpay", {
         method: "POST",
@@ -86,17 +94,45 @@ export default function CartPage() {
 
       if (res.ok && data.status === "issued" && data.customer_details) {
         clearCart();
-        const order = await fetch('/api/order', {
+        const order = await fetch(`/api/order/${session?.user.id}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userId: data.customer_details.userId,
+            // @ts-ignore
             total: cartProducts.reduce((total, { price, quantity }) => total + price * quantity, 0),
-            status: "pending"
+            // status: "pending"
           })
         });
+
+        const orderData = await order.json();
+        console.log("Order created:", orderData);
+
+        if(!orderData.ok) {
+          console.error("Failed to create order:", orderData.error);
+          return;
+        }
+
+        const orderItem = await fetch(`/api/order-items/${session?.user.id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            orderId: orderData.orderId,
+            cartItems: ItemsProduct
+          }),
+        });
+
+        const orderItemData = await orderItem.json();
+        console.log("Order Item created:", orderItemData);
+
+        if(!orderItemData.ok) {
+          console.error("Failed to create order item:", orderItemData.error);
+          return;
+        }
+
         router.push(`/cart/success?name=${data.customer_details.name}&email=${data.customer_details.email}&phoneNumber=${data.customer_details.contact}&short_url=${data.short_url}`);
       } else {
         console.error("Payment failed:", data.error || "Invalid response structure");
