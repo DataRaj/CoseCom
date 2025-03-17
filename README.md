@@ -131,3 +131,7 @@ See `LICENSE` for more information.
 [TailwindCSS-url]: https://tailwindcss.com
 [Shadcn-UI]: https://img.shields.io/badge/shadcn%20ui-000000?style=for-the-badge
 [Shadcn-url]: https://ui.shadcn.com/
+[Drizzle-url]: https://orm.drizzle.team/
+[Better-url]: https://better-auth.com/
+[PostgreSQL-url]: https://www.postgresql.org/
+[Razorpay-url]: https://razorpay.com/
