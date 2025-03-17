@@ -15,8 +15,8 @@ export async function POST(request: Request) {
     console.log(`here is a data from the body of razerpay: ${JSON.stringify(body)}` )
     const lineItems = body.cartProducts.map((product: any) => ({
       name: product.name,
-      amount: product.price, // Convert to paisa
-      currency: "USD",
+      amount: product.price * 100 * 8.7, // Convert to paisa
+      currency: "INR",
       quantity: product.quantity,
     }));
 

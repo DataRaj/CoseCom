@@ -30,6 +30,7 @@ export default function CartPage() {
   const { data: session, } = useSession();
   const { cart, clearCart } = useCartStore();
 
+  console.log("cart: ", cart);
   const form = useForm({ resolver: zodResolver(formSchema), defaultValues: { name: "", email: "", phoneNumber: "", addressLine: "", city: "", state: "", zipcode: "", country: "India" } });
 
   useEffect(() => {
@@ -69,79 +70,72 @@ export default function CartPage() {
   }, [cart]);
 
 
-  const getProduct = cart.map(({ productId, quantity }) => {
+
+  const cartProducts = cart.map(({ productId, quantity }) => {
     const product = products.find(({ id }) => id === productId);
-    return {product, quantity};
+    return product ? { name: product.name, price: product.price, quantity } : null;
   }).filter(Boolean);
-
-  const cartProducts =  getProduct ? { name: getProduct.product.name, price: getProduct.product.price, quantity: getProduct.quantity } : null;
-
-  const ItemsProduct =  getProduct ? { id: getProduct.id, quantity: getProduct.quantity } : null;
-
-
 
   const onSubmit = async (values: any) => {
     try {
+      // Step 1: Create Order
+      const totalAmount = cartProducts.reduce((total, { price, quantity }) => total + price * quantity, 0);
+      const orderRes = await fetch(`/api/orders?userId=${session?.user.id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ total: totalAmount }),
+      });
 
-      const res = await fetch("/api/razorpay", {
+      if (!orderRes.ok) {
+        throw new Error("Failed to create order");
+      }
+
+      const orderData = await orderRes.json();
+      console.log("Order created:", orderData);
+
+      // Step 2: Create Order Items
+      const orderItemRes = await fetch(`/api/order-items?userId=${session?.user.id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: orderData.orderId, items: cart }),
+      });
+
+      if (!orderItemRes.ok) {
+        throw new Error("Failed to create order items");
+      }
+
+      const orderItemData = await orderItemRes.json();
+      console.log("Order items created:", orderItemData);
+
+      // Step 3: Process Payment via Razorpay
+      const paymentRes = await fetch("/api/razorpay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...values, cartProducts }),
       });
 
-      const data = await res.json();
-      console.log("API Response:", data); // Debugging
+      const paymentData = await paymentRes.json();
+      console.log("Payment Response:", paymentData);
 
-      if (res.ok && data.status === "issued" && data.customer_details) {
-        clearCart();
-        const order = await fetch(`/api/order/${session?.user.id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            // @ts-ignore
-            total: cartProducts.reduce((total, { price, quantity }) => total + price * quantity, 0),
-            // status: "pending"
-          })
-        });
-
-        const orderData = await order.json();
-        console.log("Order created:", orderData);
-
-        if(!orderData.ok) {
-          console.error("Failed to create order:", orderData.error);
-          return;
-        }
-
-        const orderItem = await fetch(`/api/order-items/${session?.user.id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            orderId: orderData.orderId,
-            cartItems: ItemsProduct
-          }),
-        });
-
-        const orderItemData = await orderItem.json();
-        console.log("Order Item created:", orderItemData);
-
-        if(!orderItemData.ok) {
-          console.error("Failed to create order item:", orderItemData.error);
-          return;
-        }
-
-        router.push(`/cart/success?name=${data.customer_details.name}&email=${data.customer_details.email}&phoneNumber=${data.customer_details.contact}&short_url=${data.short_url}`);
-      } else {
-        console.error("Payment failed:", data.error || "Invalid response structure");
+      if (!paymentRes.ok || paymentData.status !== "issued" || !paymentData.customer_details) {
+        throw new Error("Payment failed");
       }
-    } catch (err) {
-      console.error("Submission error:", err);
+
+      // Step 4: Clear Cart & Redirect to Success Page
+      clearCart();
+      router.push(
+        `/cart/success?name=${paymentData.customer_details.name}&email=${paymentData.customer_details.email}&phoneNumber=${paymentData.customer_details.contact}&short_url=${paymentData.short_url}`
+      );
+
+    } catch (error) {
+      console.error("Transaction failed:", error);
+    } finally {
+      form.reset();
     }
-    form.reset();
   };
+
 
   return (
     <section className="p-2">

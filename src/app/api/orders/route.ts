@@ -1,46 +1,36 @@
  // app/api/orders/route.ts
 import { db } from "@/db";
-import { orderItemsTable, ordersTable, cartItemsTable} from "@/db/schema";
+import { ordersTable } from "@/db/schema";
 // import { useSession } from "@/lib/auth-client";
-import { desc, eq, and, inArray  } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
-import jwt from "jsonwebtoken";
-import { products } from "@/lib/app-data";
 
 export async function POST(req: NextRequest) {
   try {
     // Extract token from headers
-    const authHeader = req.headers.get("authorization");
-    if (!authHeader) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // const authHeader = req.headers.get("authorization");
+    const userId = req.nextUrl.searchParams.get("userId");
 
-    const token = authHeader.split(" ")[1];
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
-    if (!decoded) return NextResponse.json({ error: "Invalid Token" }, { status: 401 });
+    console.log(`here is an userId: ${userId}`)
+    // console.log(`here is an authHeader: ${authHeader}`)
+    // if (!authHeader) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const userId = decoded.id;
+    // const token = authHeader.split(" ")[1];
+    // const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+    // if (!decoded) return NextResponse.json({ error: "Invalid Token" }, { status: 401 });
+
+    // const userId = decoded.id;
 
     // Parse request body
-    const { cartItems } = await req.json();
-    if (!cartItems || !cartItems.length) return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
 
-    // Get product details to check stock and calculate total price
-    const productIds = cartItems.map((item: any) => item.id);
-    const _products = products.filter((p) => productIds.includes(p.id));
 
-    let total = 0;
-    const orderItems = [];
-
-    for (const item of cartItems) {
-      const product = _products.find((p) => p.id === item.id);
-      if (!product) return NextResponse.json({ error: `Product ${item.name} not found` }, { status: 404 });
-
-      if (product.stock < item.quantity)
-        return NextResponse.json({ error: `Insufficient stock for ${item.name}` }, { status: 400 });
-
-      total += item.price * item.quantity;
-      orderItems.push({ productId: item.id, quantity: item.quantity });
+    if (!userId || userId === "undefined") {
+      console.log("Missing or invalid userId in request", { receivedValue: userId });
+      return NextResponse.json({ error: "Missing or invalid userId" }, { status: 400 });
     }
+
+    const { total } = await req.json();
 
     // Create Order
     const [newOrder] = await db
@@ -48,19 +38,8 @@ export async function POST(req: NextRequest) {
       .values({ userId, status: "pending", total })
       .returning({ id: ordersTable.id });
 
-    // Insert Order Items
-    await db.insert(orderItemsTable).values(orderItems.map((item) => ({ ...item, orderId: newOrder.id })));
 
-    // Reduce Stock
-    for (const item of cartItems) {
-      const product = products.find((p) => p.id === item.id);
-      if (!product) return NextResponse.json({ error: `Product ${item.name} not found` }, { status: 404 });
-      products.find((p) => p.id === item.id)!.stock -= item.quantity;
-      
-    }
-
-    // Clear Cart
-    await db.delete(cartItemsTable).where(and(eq(cartItemsTable.userId, userId), inArray(cartItemsTable.productId, productIds)));
+    if(!newOrder.id) return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
 
     return NextResponse.json({ message: "Order placed successfully", orderId: newOrder.id });
   } catch (error) {

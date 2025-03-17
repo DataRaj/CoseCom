@@ -1,5 +1,5 @@
 {
-  "id": "b93a5b09-09e3-4b7a-99fb-1952c40e5af8",
+  "id": "75c20766-9631-4dc4-b7e3-74dc74176b4a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -312,7 +312,7 @@
         },
         "product_id": {
           "name": "product_id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },

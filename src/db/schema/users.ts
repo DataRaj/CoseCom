@@ -114,7 +114,7 @@ export const orderItemsTable = pgTable("order_items", {
   orderId: uuid("order_id")
     .notNull()
     .references(() => ordersTable.id, { onDelete: "cascade" }),
-  productId: uuid("product_id").notNull(),
+  productId: text("product_id").notNull(),
   quantity: integer("quantity").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
