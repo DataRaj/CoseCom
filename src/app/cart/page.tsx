@@ -27,32 +27,41 @@ export default function CartPage() {
   const [address, setAddress] = useState<any>(null);
   const [open, setOpen] = useState(true);
   const [confirmAddress, setConfirmAddress] = useState(false);
-  const { data: session, status } = useSession();
+  const { data: session, } = useSession();
   const { cart, clearCart } = useCartStore();
+
   const form = useForm({ resolver: zodResolver(formSchema), defaultValues: { name: "", email: "", phoneNumber: "", addressLine: "", city: "", state: "", zipcode: "", country: "India" } });
-  console.log("Session:", session);
+  // console.log("Session:", session?.user.id);
+
+ // if(session?.user.id === undefined) return <div>Loading...</div>;
 
   useEffect(() => {
 
-    const getAddress = async () => {
+    const fetchAddresses = async () => {
+        const userId = session?.user.id;
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/address`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            // 'authorization': session?.session.token!,
-          },
-          body: JSON.stringify({ userId: session?.session.userId }),
-        });
-        const data = await response.json();
-        if (data.addresses && data.addresses.length > 0) {
-          setAddress(data.addresses[0]);
+        if (!userId) {
+          console.error("No user ID available in session");
+          return;
         }
+
+        console.log("Fetching addresses with userId:", userId);
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/address?userId=${userId}`);
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`Failed to fetch addresses: ${errorData.error || response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data.addresses;
       } catch (error) {
-        console.error("Error fetching address:", error);
+        console.error("Error fetching addresses:", error);
+        // Handle the error appropriately in your UI
       }
     };
-    getAddress();
+    fetchAddresses();
   }, []);
 
   useEffect(() => {
@@ -120,83 +129,83 @@ export default function CartPage() {
         ) : (
           <>
             <div className="space-y-6">
-              <div className="bg-white shadow rounded-lg p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-medium text-gray-900">Shipping Address</h2>
-                  <button
-                    className="text-sm text-blue-600 hover:text-blue-500"
-                    onClick={() => setOpen(true)}
-                  >
-                    Edit
-                  </button>
-                </div>
+                          <div className="bg-gray-950 shadow rounded-lg p-6">
+                            <div className="flex justify-between items-center mb-4">
+                              <h2 className="text-lg font-medium text-gray-100">Shipping Address</h2>
+                              <button
+                                className="text-sm text-blue-600 hover:text-blue-500"
+                                onClick={() => setOpen(true)}
+                              >
+                                Edit
+                              </button>
+                            </div>
 
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">Name</p>
-                      <p className="mt-1 text-sm text-gray-900">{address.name}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">Email</p>
-                      <p className="mt-1 text-sm text-gray-900">{address.email}</p>
-                    </div>
-                  </div>
+                            <div className="space-y-4">
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <p className="text-sm font-medium text-gray-400">Name</p>
+                                  <p className="mt-1 text-sm text-gray-100">{session?.user.name}</p>
+                                </div>
+                                <div>
+                                  <p className="text-sm font-medium text-gray-400">Email</p>
+                                  <p className="mt-1 text-sm text-gray-100">{session?.user.email}</p>
+                                </div>
+                              </div>
 
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Phone Number</p>
-                    <p className="mt-1 text-sm text-gray-900">{address.phoneNumber}</p>
-                  </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-400">Phone Number</p>
+                                <p className="mt-1 text-sm text-gray-100">{address.phoneNumber}</p>
+                              </div>
 
-                  <div>
-                    <p className="text-sm font-medium text-gray-500">Address</p>
-                    <p className="mt-1 text-sm text-gray-900">{address.addressLine}</p>
-                  </div>
+                              <div>
+                                <p className="text-sm font-medium text-gray-400">Address</p>
+                                <p className="mt-1 text-sm text-gray-100">{address.addressLine}</p>
+                              </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">City</p>
-                      <p className="mt-1 text-sm text-gray-900">{address.city}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">State</p>
-                      <p className="mt-1 text-sm text-gray-900">{address.state}</p>
-                    </div>
-                  </div>
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <p className="text-sm font-medium text-gray-400">City</p>
+                                  <p className="mt-1 text-sm text-gray-100">{address.city}</p>
+                                </div>
+                                <div>
+                                  <p className="text-sm font-medium text-gray-400">State</p>
+                                  <p className="mt-1 text-sm text-gray-100">{address.state}</p>
+                                </div>
+                              </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">Country</p>
-                      <p className="mt-1 text-sm text-gray-900">{address.country}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">Zipcode</p>
-                      <p className="mt-1 text-sm text-gray-900">{address.zipcode}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <p className="text-sm font-medium text-gray-400">Country</p>
+                                  <p className="mt-1 text-sm text-gray-100">{address.country}</p>
+                                </div>
+                                <div>
+                                  <p className="text-sm font-medium text-gray-400">Zipcode</p>
+                                  <p className="mt-1 text-sm text-gray-100">{address.zipcode}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
 
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="confirmAddress"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  onChange={(e) => setConfirmAddress(e.target.checked)}
-                />
-                <label htmlFor="confirmAddress" className="text-sm text-gray-700">
-                  I confirm that this shipping address is correct
-                </label>
-              </div>
+                          <div className="flex items-center space-x-2">
+                            <input
+                              type="checkbox"
+                              id="confirmAddress"
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                              onChange={(e) => setConfirmAddress(e.target.checked)}
+                            />
+                            <label htmlFor="confirmAddress" className="text-sm text-gray-700">
+                              I confirm that this shipping address is correct
+                            </label>
+                          </div>
 
-              <button
-                className="w-full py-3 px-4 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
-                disabled={!confirmAddress}
-                onClick={() => onSubmit(address)}
-              >
-                Proceed to Payment
-              </button>
-            </div>
+                          <button
+                            className="w-full py-3 px-4 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
+                            disabled={!confirmAddress}
+                            onClick={() => onSubmit(address)}
+                          >
+                            Proceed to Payment
+                          </button>
+                        </div>
 
             <AddressModal
               open={open}

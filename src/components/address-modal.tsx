@@ -21,6 +21,7 @@ import { z } from 'zod';
 
 // Define the schema
 const addressFormSchema = z.object({
+  mobile: z.string().min(10, "Mobile number must be at least 10 characters"),
   address: z.string().min(5, "Address must be at least 5 characters"),
   city: z.string().min(2, "City must be at least 2 characters"),
   state: z.string().min(2, "State must be at least 2 characters"),
@@ -59,6 +60,7 @@ const AddressModal = ({ open, onOpenChange }: AddressModalProps) => {
   const form = useForm<AddressFormValues>({
     resolver: zodResolver(addressFormSchema),
     defaultValues: {
+      mobile: '',
       address: '',
       city: '',
       state: '',
@@ -70,9 +72,9 @@ const AddressModal = ({ open, onOpenChange }: AddressModalProps) => {
   const formSteps: FormStep[] = [
     {
       page: 1,
-      title: "Where do you live?",
-      description: "Enter your street address where you'd like deliveries to be sent.",
-      fields: ['address'],
+      title: "Personal Address?",
+      description: "Enter your mobile number and street address where you'd like deliveries to be sent.",
+      fields: ['mobile','address'],
       icon: <Home className="h-6 w-6 text-blue-400" />,
     },
     {
@@ -128,6 +130,8 @@ const AddressModal = ({ open, onOpenChange }: AddressModalProps) => {
         },
         body: JSON.stringify({...values, userId: session?.user.id}),
       });
+
+
 
       if (!response.ok) {
         throw new Error('Failed to save address');

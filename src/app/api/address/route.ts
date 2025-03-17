@@ -1,24 +1,47 @@
 import { db } from "@/db";
-import { addressTable, userTable } from "@/db/schema";
+import { addressTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 // GET address for user
-export async function GET(req: NextRequest, {params}: any) {
+export async function GET(req: NextRequest) {
   try {
-    // const userToken = req.headers.get("authorization");
-    // if (!userToken) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    const { userId } = params;
-    // const body = await req.json();
-    // const { userId } = body;
-    console.log("here is the user id", userId)
-    const user = await db.select().from(userTable).where(eq(userTable.id, userId)).then(res => res[0]);
-    if (!user) return NextResponse.json({ error: "User not found" }, { status: 404 });
+    // Get userId from the URL query parameters using NextRequest's built-in method
+    const userId = req.nextUrl.searchParams.get("userId");
 
-    const addresses = await db.select().from(addressTable).where(eq(addressTable.userId, userId));
-    return NextResponse.json({ addresses }, { status: 200 });
+    // Check if userId exists
+    if (!userId || userId === "undefined") {
+      console.log("Missing or invalid userId in request", { receivedValue: userId });
+      return NextResponse.json({ error: "Missing or invalid userId" }, { status: 400 });
+    }
+
+    console.log("Fetching addresses for userId:", userId);
+// const userId = 'yy7AUhHOgTUfCTwUJynEymER0kQkf08S'
+    const address = await db
+      .select()
+      .from(addressTable)
+      .where(eq(addressTable.userId, userId.toString())).then(res => res[0]);
+
+    if(!address) {
+      console.log("No address found for userId:", userId.toString());
+      return NextResponse.json({ error: "Address not found" }, { status: 404 });
+    }
+    console.log(`Found ${address} address for user ${userId}`);
+
+    // Return the addresses
+    return NextResponse.json({ address }, { status: 200 });
   } catch (error) {
-    console.error("Error fetching address:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    // Detailed error logging
+    console.error("Error in address GET endpoint:", {
+      message: error.message,
+      stack: error.stack,
+      userId: req.nextUrl.searchParams.get("userId")
+    });
+
+    // Return a safe error response
+    return NextResponse.json({
+      error: "Internal server error",
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    }, { status: 500 });
   }
 }
 

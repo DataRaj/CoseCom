@@ -99,7 +99,7 @@ export const ordersTable = pgTable("orders", {
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
-  
+
   status: text("status").notNull(),
   total: integer("total").notNull(),
 
@@ -127,6 +127,7 @@ export const addressTable = pgTable("address", {
   userId: text("user_id")
     .notNull()
     .references(() => userTable.id, { onDelete: "cascade" }),
+  mobile: text("mobile").notNull(),
   address: text("address").notNull(),
   city: text("city").notNull(),
   state: text("state").notNull(),
@@ -135,5 +136,3 @@ export const addressTable = pgTable("address", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
-
-
