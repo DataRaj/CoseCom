@@ -55,7 +55,7 @@ I wanted to build something clean, modern, and fast, using Next.js, Tailwind CSS
 - [TypeScript][TypeScript-url]
 - [TailwindCSS][TailwindCSS-url]
 - [Shadcn UI][Shadcn-url]
-- [Drizzle][Prisma-url]
+- [Drizzle][Drizzle-url]
 - [Better-auth][Better-url]
 - [PostgreSQL][PostgreSQL-url]
 - [Razorpay][Razorpay-url]
