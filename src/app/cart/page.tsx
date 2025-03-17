@@ -30,7 +30,7 @@ export default function CartPage() {
   const { data: session, } = useSession();
   const { cart, clearCart } = useCartStore();
 
-  console.log("cart: ", cart);
+  // console.log("cart: ", cart);
   const form = useForm({ resolver: zodResolver(formSchema), defaultValues: { name: "", email: "", phoneNumber: "", addressLine: "", city: "", state: "", zipcode: "", country: "India" } });
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function CartPage() {
 
     const fetchAddressData = async () => {
       try {
-        console.log("Fetching addresses with userId:", session.user.id);
+        // console.log("Fetching addresses with userId:", session.user.id);
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/address?userId=${session.user.id}`);
 
@@ -47,7 +47,7 @@ export default function CartPage() {
           throw new Error(`Failed to fetch address: ${errorData.error || response.statusText}`);
         }
         const data = await response.json();
-        console.log("Fetched addresses:", data.address);
+        // console.log("Fetched addresses:", data.address);
         setAddress(data.address); // Set the address state with the fetched data
       } catch (error) {
         console.error("Error fetching addresses:", error);
@@ -59,12 +59,12 @@ export default function CartPage() {
 
   }, [session?.user?.id]); // ✅ Re-run when session.user.id changes
 
-  console.log(`here is an address: `, address)
+  // console.log(`here is an address: `, address)
 
 
   useEffect(() => {
     if (!Array.isArray(cart)) {
-      console.log("Resetting corrupted cart state");
+      // console.log("Resetting corrupted cart state");
       clearCart();
     }
   }, [cart]);
@@ -79,6 +79,7 @@ export default function CartPage() {
   const onSubmit = async (values: any) => {
     try {
       // Step 1: Create Order
+      // @ts-ignore
       const totalAmount = cartProducts.reduce((total, { price, quantity }) => total + price * quantity, 0);
       const orderRes = await fetch(`/api/orders?userId=${session?.user.id}`, {
         method: "POST",
@@ -93,7 +94,7 @@ export default function CartPage() {
       }
 
       const orderData = await orderRes.json();
-      console.log("Order created:", orderData);
+      // console.log("Order created:", orderData);
 
       // Step 2: Create Order Items
       const orderItemRes = await fetch(`/api/order-items?userId=${session?.user.id}`, {
@@ -107,7 +108,7 @@ export default function CartPage() {
       }
 
       const orderItemData = await orderItemRes.json();
-      console.log("Order items created:", orderItemData);
+      // console.log("Order items created:", orderItemData);
 
       // Step 3: Process Payment via Razorpay
       const paymentRes = await fetch("/api/razorpay", {
@@ -117,7 +118,7 @@ export default function CartPage() {
       });
 
       const paymentData = await paymentRes.json();
-      console.log("Payment Response:", paymentData);
+      // console.log("Payment Response:", paymentData);
 
       if (!paymentRes.ok || paymentData.status !== "issued" || !paymentData.customer_details) {
         throw new Error("Payment failed");

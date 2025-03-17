@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     // const authHeader = req.headers.get("authorization");
     const userId = req.nextUrl.searchParams.get("userId");
 
-    console.log(`here is an userId: ${userId}`)
+    // console.log(`here is an userId: ${userId}`)
     // console.log(`here is an authHeader: ${authHeader}`)
     // if (!authHeader) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 

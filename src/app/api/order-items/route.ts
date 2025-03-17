@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     if (!userId || userId === "undefined") return NextResponse.json({ error: "Missing or invalid userId" }, { status: 400 });
 
     const { orderId, items } = await req.json();
-    console.log(`here is an orderId: ${orderId} and items: ${items[0].productId}`)
+    // console.log(`here is an orderId: ${orderId} and items: ${items[0].productId}`)
     if (!items?.length) return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
     if (!orderId) return NextResponse.json({ error: "Missing orderId" }, { status: 400 });
 
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
 
     for (const item of items) {
       const product = productMap.get(item.productId);
-      console.log(`here is a product: ${product}`)
+      // console.log(`here is a product: ${product}`)
       if (!product) return NextResponse.json({ error: `Product ${item.name} not found` }, { status: 404 });
       if (product.stock < item.quantity) return NextResponse.json({ error: `Insufficient stock for ${item.name}` }, { status: 400 });
     }

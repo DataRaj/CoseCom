@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    console.log(`here is a data from the body of razerpay: ${JSON.stringify(body)}` )
+    // console.log(`here is a data from the body of razerpay: ${JSON.stringify(body)}` )
     const lineItems = body.cartProducts.map((product: any) => ({
       name: product.name,
       amount: product.price * 100 * 8.7, // Convert to paisa

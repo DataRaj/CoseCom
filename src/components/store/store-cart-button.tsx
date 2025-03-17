@@ -30,8 +30,8 @@ export function CardButton() {
 
 
 
-  console.log(cart.length)
-  console.log("here are cart items ", cart.map((item) => products.find((p) => p.id === item.productId)))
+  // console.log(cart.length)
+  // console.log("here are cart items ", cart.map((item) => products.find((p) => p.id === item.productId)))
   const subtotal = cart.reduce((total, item) => {
     const product = products.find((p) => p.id === item.productId);
     return product ? total + product.price * item.quantity : total;
