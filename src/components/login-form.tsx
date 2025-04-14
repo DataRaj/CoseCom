@@ -22,14 +22,14 @@ export function LoginForm({
 }: React.ComponentPropsWithoutRef<"div">) {
   const router = useRouter();
   const [email, setEmail] = useState("admin");
-  const [password, setPassword] = useState("12345678");
+  const [password, setPassword] = useState("admin");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (email === "admin@nvh.com" && password === "Admin-NVH-1") {
+    if (email === "admin" && password === "admin") {
       router.push("/admin/dashboard");
     } else {
       setErrorMessage("Invalid email or password. Please try again.");

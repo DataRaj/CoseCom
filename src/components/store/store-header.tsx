@@ -31,7 +31,7 @@ export default function Header(
         }`}
       >
         <Link href="/">
-          <img src="/cosecom_logo.jpg" alt="cosecom logo" className="h-20 w-180 mr-4" />
+          <img src="/cosecom_logo.png" alt="cosecom logo" className="h-20 w-180 mr-4" />
         </Link>
         {!products && (
           <nav>

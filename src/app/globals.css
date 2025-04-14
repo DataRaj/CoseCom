@@ -1,93 +1,186 @@
+/* ==========================================================================
+   Tailwind Base, Components, and Utilities
+   ========================================================================== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Global Base Styles
+   ========================================================================== */
 * {
   scroll-behavior: smooth;
 }
 
 body {
+  /* Using system fonts as requested. */
+  /* FOR PREMIUM FEEL: Highly recommend importing a font like Inter, Lexend, Poppins, or Manrope */
   font-family: Arial, Helvetica, sans-serif;
+  /* Enhance font rendering for polish */
+   -webkit-font-smoothing: antialiased;
+   -moz-osx-font-smoothing: grayscale;
+   font-feature-settings: 'liga' 1, 'calt' 1; /* Enable basic ligatures */
 }
 
+/* ==========================================================================
+   CSS Custom Properties (Variables) for Theming - Lighted, Polished, Premium
+   ========================================================================== */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
-    --chart-1: 220 70% 50%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    /* --- Light Mode Palette - Bright, Soft Gold Accent --- */
+    /* Base Tones - Pure White & Soft Dark Text */
+    --background: 0 0% 100%;        /* Pure White */
+    --foreground: 220 10% 20%;       /* Dark Cool Grey Text */
+
+    /* Cards, Popovers - Clean Surfaces */
+    --card: 0 0% 100%;              /* Pure White */
+    --card-foreground: 220 10% 20%; /* Dark Cool Grey Text */
+    --popover: 0 0% 100%;           /* Pure White */
+    --popover-foreground: 220 10% 20%;/* Dark Cool Grey Text */
+
+    /* Primary Action Color - Soft, Elegant Gold/Champagne */
+    --primary: 40 50% 68%;          /* Soft Gold/Champagne */
+    --primary-foreground: 220 10% 15%;/* Darker text for contrast on soft gold */
+
+    /* Secondary Elements - Very Subtle & Light */
+    --secondary: 45 30% 97%;        /* Extremely light warm hint */
+    --secondary-foreground: 220 10% 25%;/* Slightly darker text */
+
+    /* Muted Elements - Barely There */
+    --muted: 45 20% 98%;            /* Almost white */
+    --muted-foreground: 220 8% 55%; /* Medium Grey Text */
+
+    /* Accent - Focus Rings, Subtle Highlights */
+    --accent: 45 60% 75%;           /* Slightly brighter soft gold */
+    --accent-foreground: 220 10% 15%;/* Darker text for contrast */
+
+    /* Destructive Actions - Clear but Softened Red */
+    --destructive: 0 70% 65%;       /* Slightly softer red */
+    --destructive-foreground: 0 0% 100%; /* White Text */
+
+    /* Borders & Inputs - Very Subtle */
+    --border: 220 15% 92%;          /* Very light grey border */
+    --input: 220 15% 92%;           /* Very light grey input border */
+    --ring: 40 50% 68%;             /* Focus ring using primary color */
+
+    /* Radius & Charts - Softer Corners */
+    --radius: 0.75rem;              /* Increased radius for softer feel */
+    /* Chart colors derived from the soft gold theme */
+    --chart-1: 40 50% 68%;          /* Primary gold */
+    --chart-2: 45 40% 78%;          /* Lighter gold */
+    --chart-3: 220 10% 75%;         /* Light neutral grey */
+    --chart-4: 30 50% 80%;          /* Hint of light peach */
+    --chart-5: 40 30% 88%;          /* Very light gold */
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    /* --- Dark Mode Palette - High Contrast & Elegant --- */
+    /* Base Tones - Deep Background, Bright Text */
+    --background: 220 10% 12%;      /* Rich Dark Cool Grey */
+    --foreground: 220 20% 96%;      /* Bright Cool Grey Text */
+
+    /* Cards, Popovers - Defined Surfaces */
+    --card: 220 9% 16%;           /* Slightly lighter dark grey */
+    --card-foreground: 220 20% 96%; /* Bright Cool Grey Text */
+    --popover: 220 9% 16%;          /* Slightly lighter dark grey */
+    --popover-foreground: 220 20% 96%;/* Bright Cool Grey Text */
+
+    /* Primary Action Color - Luminous Gold */
+    --primary: 45 65% 75%;          /* Brighter Gold for dark mode */
+    --primary-foreground: 220 15% 10%;/* Very dark text for contrast */
+
+    /* Secondary Elements - Subtle Contrast */
+    --secondary: 220 8% 22%;        /* Dark grey, lighter than background */
+    --secondary-foreground: 220 20% 96%;/* Bright Cool Grey Text */
+
+    /* Muted Elements - Low Emphasis */
+    --muted: 220 8% 22%;            /* Dark grey, same as secondary */
+    --muted-foreground: 220 10% 65%; /* Lighter grey text */
+
+    /* Accent - Noticeable Highlights */
+    --accent: 45 70% 80%;           /* Even brighter gold */
+    --accent-foreground: 220 15% 10%;/* Very dark text for contrast */
+
+    /* Destructive Actions - Clear Error Indication */
+    --destructive: 0 65% 60%;       /* Visible red */
+    --destructive-foreground: 220 20% 96%;/* Bright Text */
+
+    /* Borders & Inputs - Subtle Definition */
+    --border: 220 8% 25%;         /* Dark grey border, subtly visible */
+    --input: 220 8% 25%;          /* Dark grey input border */
+    --ring: 45 65% 75%;             /* Focus ring using primary color */
+
+    /* Radius & Charts */
+    /* --radius: 0.75rem; */       /* Inherited */
+    /* Chart colors adjusted for dark mode visibility */
+    --chart-1: 45 65% 75%;          /* Primary gold */
+    --chart-2: 40 50% 65%;          /* Darker gold */
+    --chart-3: 220 10% 60%;         /* Medium neutral grey */
+    --chart-4: 30 55% 70%;          /* Muted peach */
+    --chart-5: 45 40% 85%;          /* Light gold */
   }
 }
 
+/* ==========================================================================
+   Base Layer Application & Custom Component Styles - Polished
+   ========================================================================== */
 @layer base {
   * {
+    /* Apply border color variable globally */
     @apply border-border;
+    /* Apply smooth transitions (slightly longer duration) */
+    @apply transition-all duration-300 ease-in-out; /* Apply transition more broadly */
   }
   body {
+    /* Apply background and foreground variables */
     @apply bg-background text-foreground;
   }
+
+  /* Refined custom card animation style */
   .animate-scroll-card {
-    @apply h-40 min-w-[268px] grayscale rounded-xl bg-slate-700 opacity-40 sm:opacity-20 sm:group-hover:opacity-60 transition-all duration-500 group-hover:scale-105;
+    @apply h-40 min-w-[268px] rounded-xl; /* Use theme radius */
+    @apply bg-card border border-border/50; /* Use card bg, add subtle border */
+    @apply shadow-sm; /* Add a subtle shadow for depth */
+    @apply transition-all duration-500 ease-out; /* Keep custom duration for this animation */
+    @apply opacity-90 group-hover:opacity-100; /* Less initial fade */
+    @apply group-hover:scale-105 group-hover:shadow-md; /* Scale and slightly increase shadow on hover */
+    /* Grayscale removed for better product visibility if used */
   }
 }
 
+/* ==========================================================================
+   Further Polish (Component Layer Suggestions - Add if needed)
+   ========================================================================== */
+/*
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-[hsl(var(--primary-h),var(--primary-s),calc(var(--primary-l)_-_5%))];
+    @apply focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background;
+    @apply px-4 py-2 rounded-md shadow-sm; // Example structure
+    // Consider subtle gradients: bg-gradient-to-b from-primary to-[hsl(...)]
+  }
+
+  .input-field {
+     @apply border-input bg-background focus:border-primary focus:ring-1 focus:ring-ring;
+     // Customize appearance further
+  }
+}
+*/
+
+/* ==========================================================================
+   Keyframes for Animations
+   ========================================================================== */
 @keyframes scrolling {
   0% {
     transform: translateX(0);
   }
   100% {
+    /* Adjust if your container/card widths change significantly */
     transform: translateX(calc(-50%));
   }
 }
 
+/* Class to apply the scrolling animation */
 .animate-scroll {
   animation: scrolling 30s linear infinite;
 }
