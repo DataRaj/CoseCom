@@ -114,7 +114,7 @@ const StoryModal = ({ open, onOpenChange, pages }: StoryModalProps) => {
 
   // Progress indicator component
   const ProgressIndicator = () => (
-    <div className="flex justify-center mt-4 space-x-2">
+    <div className="flex justify-center bg-background mt-4 space-x-2">
       {pages.map((_, index) => (
         <button
           key={index}
@@ -131,9 +131,10 @@ const StoryModal = ({ open, onOpenChange, pages }: StoryModalProps) => {
   );
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+  <div className='bg-background'>
+    <Dialog open={open} onOpenChange={onOpenChange} className="bg-background">
       <DialogContent
-        className="max-w-4xl bg-gray-950 border-4 border-gray-700 shadow-lg shadow-card text-gray-100 p-0 overflow-hidden"
+        className="max-w-3xl border-4 border-gray-700 shadow-lg shadow-card text-gray-100 p-0 overflow-hidden"
         onTouchStart={handleTouchStart}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onTouchMove={handleTouchMove as any}
@@ -213,7 +214,7 @@ const StoryModal = ({ open, onOpenChange, pages }: StoryModalProps) => {
         </div>
 
         {/* Progress indicators */}
-        <div className="border-t border-gray-800 p-4 bg-gray-950">
+        <div className="border-t border-gray-800 p-4 bg-background">
           <ProgressIndicator />
 
           <div className="flex justify-between mt-4">
@@ -246,6 +247,7 @@ const StoryModal = ({ open, onOpenChange, pages }: StoryModalProps) => {
         </div>
       </DialogContent>
     </Dialog>
+  </div>
   );
 };
 

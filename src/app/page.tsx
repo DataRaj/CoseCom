@@ -80,11 +80,11 @@ export default function Home() {
       <ReviewSection />
       <About />
       <Footer />
-      <StoryModal
+      {/* <StoryModal
         open={open}
         onOpenChange={setOpen}
         pages={storyPages}
-      />
+      /> */}
 
     </>
   );
