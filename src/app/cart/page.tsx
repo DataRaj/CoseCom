@@ -163,7 +163,7 @@ export default function CartPage() {
         ) : (
           <>
             <div className="space-y-6">
-                          <div className="bg-gray-950 shadow rounded-lg p-6">
+                          <div className="bg-background shadow rounded-lg p-6">
                             <div className="flex justify-between items-center mb-4">
                               <h2 className="text-lg font-medium text-gray-100">Shipping Address</h2>
                               <button
@@ -233,7 +233,7 @@ export default function CartPage() {
                           </div>
 
                           <button
-                            className="w-full py-3 px-4 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
+                            className="w-full py-3 px-4 text-black bg-primary hover:bg-[#d6b75c] animate-in duration-300  rounded-md font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
                             disabled={!confirmAddress}
                             onClick={() => onSubmit(address)}
                           >

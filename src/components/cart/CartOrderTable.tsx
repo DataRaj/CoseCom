@@ -41,9 +41,9 @@ export default function CartOrderTable() {
   const cartProducts = cart
     .map(({ productId, quantity }) => {
       const product = products.find(({ id }) => id === productId);
-      return product ? { id: product.id,name: product.name, image: product.image, price: product.price, quantity } : null;
+      return product ? { id: product.id,name: product.name, image: product.image, price: product.price, route: product.route, quantity } : null;
     })
-    .filter(Boolean) as { id: number, name: string; image: string; price: number; quantity: number }[];
+    .filter(Boolean) as { id: number, name: string; image: string; price: number; route:string; quantity: number }[];
 
   const subtotal = cartProducts.reduce((total, { price, quantity }) => total + price * quantity, 0);
   // console.log(cart.length)

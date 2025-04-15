@@ -13,11 +13,11 @@ export default function CartProductCard({
   addToCart: (productId: number) => void;
   updateItemQuantity: (productId: number, quantity: number) => void;
   deleteFromCart: (productId: number) => void;
-} & { product: { id: number; name: string; image: string; price: number; quantity: number } }) {
+} & { product: { id: number; name: string; image: string; price: number; quantity: number, route?: string } }) {
   return (
     <Card className="mb-2 flex flex-row p-1">
       <CardContent className="flex w-full flex-row p-0">
-        <Link className="min-w-fit" href={`/product/${product.id}`}>
+        <Link className="min-w-fit" href={`/products/${product.route}`}>
           <Image
             src={product.image}
             width={100}
