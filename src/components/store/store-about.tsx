@@ -3,7 +3,7 @@ import { Star, StarHalf } from "lucide-react";
 export default function About() {
   return (
     <section
-      id="about-the-brandnvh"
+      id="about-the-brand"
       className="py-12 sm:py-24 max-w-screen-lg mx-auto px-4"
     >
       <div className="text-center mb-10 sm:mb-16">

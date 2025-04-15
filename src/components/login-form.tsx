@@ -40,7 +40,7 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-4xl text-center">NVH®</CardTitle>
+          <CardTitle className="text-4xl text-center">Cosecom®</CardTitle>
           <CardDescription className="text-center">
             <p className="mb-2">This login is restricted to administrators.</p>
           </CardDescription>
@@ -54,7 +54,7 @@ export function LoginForm({
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@nvh.com"
+                placeholder="admin@dataraj.com"
                 required
               />
             </div>
@@ -95,8 +95,8 @@ export function LoginForm({
             {errorMessage && (
               <p className="text-red-500 text-sm select-text">
                 {errorMessage}
-                <span className="block">Email: admin@nvh.com</span>
-                <span>Password: Admin-NVH-1</span>
+                <span className="block">Email: admin</span>
+                <span>Password: admin</span>
               </p>
             )}
 
