@@ -29,12 +29,12 @@ export default function CartOrderTable() {
   useEffect(() => {
     if (cart.length === 0){
     const interval = setInterval(() => {
-      setTime((prevTime) => prevTime - 1);
+      setTime((prevTime) => prevTime == 0 ? prevTime : prevTime - 1);
     }, 1000);
     return () => clearInterval(interval);
     }
 
-  }, [time]);
+  }, [time,cart.length]);
 
 
   if (!hydrated) return null;

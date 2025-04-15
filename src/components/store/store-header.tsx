@@ -191,7 +191,7 @@ export default function Header(
 
         <Link
           href={"/admin"}
-          className="fixed bottom-0 right-0 m-4 bg-[#F8F8F8] hover:bg-[#eaeaea] transition-colors shadow-md text-black rounded-xl py-2 px-3 z-40"
+          className="fixed  bottom-0 right-0 m-4 z-0 bg-[#F8F8F8]/20 hover:bg-[#eaeaea] transition-colors duration-300 shadow-md text-black rounded-xl py-2 px-3 "
         >
           Admin Dashboard
         </Link>
