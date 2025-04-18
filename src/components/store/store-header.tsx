@@ -43,7 +43,7 @@ export default function Header(
                 <a href="#client-favorites">Client Favorites</a>
               </li>
               <li className="hover:underline underline-offset-8 cursor-pointer">
-                <a href="#why-nvh">Why CoseCom</a>
+                <a href="#why-cosecom">Why CoseCom</a>
               </li>
               <li className="hover:underline underline-offset-8 cursor-pointer">
                 <a href="#about-the-brand">About The Brand</a>
@@ -174,7 +174,7 @@ export default function Header(
                 <a href="#client-favorites" className=" font-medium text-xl">Client Favorites</a>
               </li>
               <li className="hover:underline underline-offset-8 cursor-pointer">
-                <a href="#why-nvh" className=" font-medium text-xl">Why CoseCom</a>
+                <a href="#why-cosecom" className=" font-medium text-xl">Why CoseCom</a>
               </li>
               <li className="hover:underline underline-offset-8 cursor-pointer">
                 <a href="#about-the-brand" className=" font-medium text-xl">About The Brand</a>

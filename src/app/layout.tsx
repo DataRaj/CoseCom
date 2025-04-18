@@ -15,8 +15,8 @@ export const metadata: Metadata = {
     "Experience luxury skincare with CoseCom – a beautifully designed Ecommerce store offering premium skincare products with a seamless shopping experience.",
   keywords:
     "Luxury Skincare, Premium Beauty, High-end Skincare, Anti-Aging, Hydrating Serums, Next.js Ecommerce",
-  authors: [{ name: "nzar.dev" }],
-  metadataBase: new URL("https://nvh.nzar.dev"),
+  authors: [{ name: "dat.dev" }],
+  metadataBase: new URL("https://cosecom.dat.dev"),
   openGraph: {
     title: "CoseCom • Luxury Skincare Ecommerce",
     description:
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     siteName: "CoseCom - Skincare Cosmetics Ecommerce",
     images: [
       {
-        url: "https://nvh.nzar.dev/cover.jpg",
+        url: "https://cosecom.dat.dev/cover.jpg",
         width: 1200,
         height: 630,
         alt: "CoseCom Products",
@@ -35,13 +35,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NVH® • Luxury Skincare Ecommerce",
+    title: "cosecom® • Luxury Skincare Ecommerce",
     description:
-      "Shop premium skincare products with NVH® – a luxury Ecommerce brand designed for elegance and performance.",
-    images: ["https://nvh.nzar.dev/cover.jpg"],
+      "Shop premium skincare products with cosecom® – a luxury Ecommerce brand designed for elegance and performance.",
+    images: ["https://cosecom.dat.dev/cover.jpg"],
   },
   alternates: {
-    canonical: "https://nvh.nzar.dev",
+    canonical: "https://cosecom.dat.dev",
   },
 };
 

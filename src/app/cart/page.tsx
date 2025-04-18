@@ -8,7 +8,9 @@ import { useSession } from "@/lib/auth-client";
 import useCartStore from "@/store/useStore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSessionStore } from "@/store/sessionStore";
 import * as z from "zod";
+
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must contain at least 2 characters").max(50, "Name is too long"),
@@ -40,7 +42,7 @@ export default function CartPage() {
   const [confirmAddress, setConfirmAddress] = useState(false);
   const { data: session } = useSession();
   const { cart, clearCart } = useCartStore();
-  
+ 
   // Separate loading states for different page sections
   const [loadingAddress, setLoadingAddress] = useState(false);
   const [loadingCart, setLoadingCart] = useState(true);
@@ -56,13 +58,20 @@ export default function CartPage() {
       setLoadingAddress(true);
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/address?userId=${session.user.id}`);
-        
+      
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(`Failed to fetch address: ${errorData.error || response.statusText}`);
         }
         
         const data = await response.json();
+        if(process.env.NODE_ENV === "development") {
+          console.log(`name from the store : ${session?.user?.name}` );
+          console.log(`here is a name from the address: ${data.addresession?.user?.namess.name}` );
+          console.log('email from the store :', session?.user?.email);
+          console.log(`here is a email from the address: ${data.address.email}` );
+          console.log(`here is a data from the address: ${data.address.zip}` );
+        }
         setAddress(data.address);
       } catch (error) {
         console.error("Error fetching addresses:", error);
@@ -266,7 +275,7 @@ export default function CartPage() {
                 <button
                   className="w-full py-3 px-4 text-black bg-primary hover:bg-[#d6b75c] transition-colors duration-300 rounded-md font-medium disabled:bg-gray-300 disabled:cursor-not-allowed transform hover:scale-[1.01] active:scale-[0.98]"
                   disabled={!confirmAddress}
-                  onClick={() => onSubmit(address)}
+                  onClick={() => onSubmit({ ...address, name: session?.user?.name, email: session?.user?.email })}
                 >
                   Proceed to Payment
                 </button>
