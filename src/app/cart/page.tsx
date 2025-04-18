@@ -233,7 +233,7 @@ export default function CartPage() {
                           </div>
 
                           <button
-                            className="w-full py-3 px-4 text-black bg-primary hover:bg-[#d6b75c] animate-in duration-300  rounded-md font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
+                            className="w-full py-3 px-4 text-black bg-primary hover:bg-[#d6b75c]  animate-in duration-300  rounded-md font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
                             disabled={!confirmAddress}
                             onClick={() => onSubmit(address)}
                           >
