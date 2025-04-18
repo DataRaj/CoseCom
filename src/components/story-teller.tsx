@@ -132,7 +132,7 @@ const StoryModal = ({ open, onOpenChange, pages }: StoryModalProps) => {
 
   return (
   <div className='bg-background'>
-    <Dialog open={open} onOpenChange={onOpenChange} className="bg-background">
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="max-w-3xl border-4 border-gray-700 shadow-lg shadow-card text-gray-100 p-0 overflow-hidden"
         onTouchStart={handleTouchStart}
