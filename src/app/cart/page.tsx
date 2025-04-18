@@ -149,7 +149,7 @@ export default function CartPage() {
             <div className="flex items-center justify-between p-4 mb-4 bg-yellow-50 border border-yellow-200 rounded-md">
               <p className="text-sm text-yellow-700">There is no address in your account.</p>
               <button
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="px-4 py-2 text-sm font-medium text-white bg-[#d3b76c] rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                 onClick={() => setOpen(true)}
               >
                 Please add one
@@ -167,7 +167,7 @@ export default function CartPage() {
                             <div className="flex justify-between items-center mb-4">
                               <h2 className="text-lg font-medium text-gray-100">Shipping Address</h2>
                               <button
-                                className="text-sm text-blue-600 hover:text-blue-500"
+                                className="text-sm text-primary hover:text-[#d6b75c]"
                                 onClick={() => setOpen(true)}
                               >
                                 Edit
@@ -202,7 +202,7 @@ export default function CartPage() {
                                   <p className="mt-1 text-sm text-gray-100">{address.city}</p>
                                 </div>
                                 <div>
-                                  <p className="text-sm font-medium text-gray-400">State</p>
+                                  <p className="text-sm font-medium text-gray-400">State</p>k
                                   <p className="mt-1 text-sm text-gray-100">{address.state}</p>
                                 </div>
                               </div>
@@ -224,7 +224,7 @@ export default function CartPage() {
                             <input
                               type="checkbox"
                               id="confirmAddress"
-                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                              className="h-4 w-4 text-primary focus:ring-[#d6b75c] border-gray-400 rounded"
                               onChange={(e) => setConfirmAddress(e.target.checked)}
                             />
                             <label htmlFor="confirmAddress" className="text-sm text-gray-700">
@@ -233,7 +233,7 @@ export default function CartPage() {
                           </div>
 
                           <button
-                            className="w-full py-3 px-4 text-black bg-primary hover:bg-[#d6b75c]  animate-in duration-300  rounded-md font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
+                            className="w-full py-3 px-4 text-black bg-primary hover:bg-[#d6b75c]  animate-[fall_3s_ease_100ms_infinite] rounded-md font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
                             disabled={!confirmAddress}
                             onClick={() => onSubmit(address)}
                           >
