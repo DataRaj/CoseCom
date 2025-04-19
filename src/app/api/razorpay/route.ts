@@ -1,5 +1,3 @@
-export const runtime = "edge";
-
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -17,6 +15,22 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
+
+    if (process.env.NODE_ENV === "development") {
+      if (!body.name || !body.email || !body.mobile || !body.address || !body.city || !body.state || !body.country || !body.zip) {
+        console.error("Missing required customer details:", {
+        name: body.name,
+        email: body.email,
+        mobile: body.mobile,
+        address: body.address,
+        city: body.city,
+        state: body.state,
+        country: body.country,
+        zip: body.zip,
+        });
+        return NextResponse.json({ error: "Missing required customer details" }, { status: 400 });
+      }
+    }
     // console.log(`here is a data from the body of razerpay: ${JSON.stringify(body)}` )
     const lineItems = body.cartProducts.map((product: any) => ({
       name: product.name,
@@ -24,25 +38,6 @@ export async function POST(request: Request) {
       currency: "INR",
       quantity: product.quantity,
     }));
-    // if(process.env.NODE_ENV === "development") {
-    //   console.log(`here is a data from the body of razerpay: ${JSON.stringify(body)}` );
-    //   console.log(`here is a customer name from the body of razerpay: ${body.name}` );
-    //   console.log(`here is a data from the line items of razerpay: ${JSON.stringify(lineItems)}` );
-    // }
-
-    if (!body.name || !body.email || !body.mobile || !body.address || !body.city || !body.state || !body.country || !body.zip) {
-      console.error("Missing required customer details:", {
-      name: body.name,
-      email: body.email,
-      mobile: body.mobile,
-      address: body.address,
-      city: body.city,
-      state: body.state,
-      country: body.country,
-      zip: body.zip,
-      });
-      return NextResponse.json({ error: "Missing required customer details" }, { status: 400 });
-    }
 
     const invoice = {
       type: "invoice",
@@ -61,14 +56,12 @@ export async function POST(request: Request) {
       line_items: lineItems,
     };
 
-    const authToken = Buffer.from(`${razorpayID}:${razorpayKey}`).toString("base64");
-console.log("Auth token starts with:", authToken.substring(0, 5)); // Safe logging of prefix
 
 const response = await fetch("https://api.razorpay.com/v1/invoices", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Basic ${authToken}`,
+    Authorization: `Basic ${btoa(`${razorpayID}:${razorpayKey}`)}`,
   },
   body: JSON.stringify(invoice),
 });

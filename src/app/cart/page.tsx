@@ -145,6 +145,11 @@ export default function CartPage() {
       }
 
       // Step 4: Clear Cart & Redirect to Success Page
+      if(process.env.NODE_ENV === "development") {
+
+        console.log(`%c -------- Payment is successfully done ---------`, 'color:green; font-size: 16px; font-weight: semibold;');
+
+      }
       clearCart();
       router.push(
         `/cart/success?name=${paymentData.customer_details.name}&email=${paymentData.customer_details.email}&phoneNumber=${paymentData.customer_details.contact}&short_url=${paymentData.short_url}`
