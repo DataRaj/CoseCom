@@ -77,7 +77,7 @@ export function SignUpPageClient() {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-primary"
                 placeholder="Full Name"
               />
             </div> */}
@@ -96,7 +96,7 @@ export function SignUpPageClient() {
                   type="text"
                   value={formData.firstName}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-primary"
                   placeholder="First Name"
                 />
               </div>
@@ -110,7 +110,7 @@ export function SignUpPageClient() {
                   type="text"
                   value={formData.lastName}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-primary"
                   placeholder="Last Name"
                 />
               </div>
@@ -126,7 +126,7 @@ export function SignUpPageClient() {
                 type="number"
                 value={formData.age}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-primary"
                 placeholder="Age"
               />
             </div>
@@ -142,7 +142,7 @@ export function SignUpPageClient() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-primary"
                 placeholder="Email address"
               />
             </div>
@@ -158,7 +158,7 @@ export function SignUpPageClient() {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-primary"
                 placeholder="Password"
               />
             </div>
@@ -168,7 +168,7 @@ export function SignUpPageClient() {
             <button
               type="submit"
               disabled={loading}
-              className="flex w-full justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+              className="flex w-full justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-gray-800 hover:bg-[#c8ab55] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors duration-200 disabled:opacity-50"
             >
               {loading ? "Creating account..." : "Sign up"}
             </button>
@@ -180,7 +180,7 @@ export function SignUpPageClient() {
             Already have an account?{" "}
             <a
               href="/auth/sign-in"
-              className="font-medium text-blue-600 hover:text-blue-500"
+              className="font-medium text-primary hover:text-[#d6b75c]"
             >
               Sign in
             </a>

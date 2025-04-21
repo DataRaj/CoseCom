@@ -2,7 +2,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
+import { ReactLenis} from '@/utils/lenis';
 const inter = Inter({
   variable: "--inter",
   subsets: ["latin"],
@@ -52,10 +52,13 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <html lang="en" suppressHydrationWarning>
+      <html lang="en" suppressHydrationWarning className=" scroll-smooth">
+        <ReactLenis root>
         <head>
           <meta name="theme-color" content="#09090b" />
+
         </head>
+
         <body className={`${inter.className} antialiased select-none`}>
 
             <ThemeProvider
@@ -63,11 +66,12 @@ export default function RootLayout({
               defaultTheme="system"
               enableSystem
               disableTransitionOnChange
-            >
+              >
               {children}
             </ThemeProvider>
 
         </body>
+      </ReactLenis>
       </html>
     </>
   );
